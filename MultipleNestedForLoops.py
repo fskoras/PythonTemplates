@@ -3,19 +3,21 @@ import re
 
 compiled_regex = re.compile("\[(\d)*\.\.(\d)*\]")
 
-line = "siema[0..2][0..3].ziom[0..4]"
+line = "hello[0..2][0..3].world[0..4]"
 
 iterable = re.finditer(compiled_regex, line)
 
 a = []
 b = []
 
-for el in list(iterable)[::-1]:
+for el in list(iterable):
     a.append(range(int(el[1]), int(el[2]) + 1))
     b.append([el.start(), el.end()])
 
+
 for pos in product(*a):
     dummy = line
-    for idx, i in enumerate(b):
+    pos = pos[::-1]
+    for idx, i in enumerate(b[::-1]):
         dummy = "{}[{}]{}".format(dummy[:i[0]], pos[idx], dummy[i[1]:])
     print(dummy)
